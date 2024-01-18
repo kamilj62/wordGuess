@@ -11,6 +11,8 @@ var timerCountEl = document.querySelector('.timer-count');
 // TODO: Grab the start button
 var startEl = document.querySelector('.start-button');
 // Global variables needed
+var win = 0;
+var loss = 0;
 // Array of words the user will guess
 var words = [
 	'variable',
@@ -65,7 +67,7 @@ function setTimer() {
     timer--;
     timerCountEl.textContent = timer;
 
-    if(timer !== 0) {
+    if(timer !== 0 && wordBlanksEl === 0) {
       // Stops execution of action at set interval
       	clearInterval(timerInterval);
       // Calls winGame function
@@ -82,26 +84,44 @@ function setTimer() {
 // The winGame function is called when the user has found the hidden word
 function winGame() {
 	// TODO: Let the user know they won
+	wordBlanksEl.textContent = "You win";
 	// TODO: Update the win count on screen as well as in local storage
+	localStorage.setItem("winEl", win++);
+	winEl.textContent = win;
 	// TODO (Optional): Enable the start button in case the user wants to play again
 }
 
 // The loseGame function is called when timer reaches 0
 function loseGame() {
 	// TODO: Let the user know they lost
+	wordBlanksEl.textContent = "You Lose";
 	// TODO: Update the loss count on screen as well as in local storage
+	localStorage.setItem("loseEl", loss++);
+	loseEl.textContent = loss;
 	// TODO (Optional): Enable the start button in case the user wants to play again
 }
 
 // The checkLetters function tests if the guessed letter is in the hidden word and renders it to the screen.
 function checkLetters(letter) {
 	// TODO: Loop over each letter of the hidden word and update the blanks if the letter guessed is in the hidden word
+	for (let i = 0; i < words.length; i++) {
+		if (letter) {
+			wordBlanksEl.textContent = letter;
+		}
+		
+	}
 }
 
 // Attach event listener to document to listen for key event
 document.addEventListener('keydown', function (event) {
 	// TODO: Check the time left - if time is up, exit the function
+	if (timer === 0) {
+		return;
+	}
 	// TODO: Collect the key pressed. If it is a letter, then: (1) pass it to the 'checkLetters' function to verify if it's a correct guess, then (2) check if the user has found the hidden word
+	if (checkLetters()) {
+
+	}
 });
 
 // Function to retrieve the number of wins stored in local storage. This function is used in the init function.
