@@ -1,10 +1,14 @@
 // DOM elements needed
 // TODO: Grab the HTML element that holds the blanks (it is the div with class 'word-blanks')
+var wordBlanksEl = document.querySelector('.word-blanks');
 // TODO: Grab the HTML element that holds the wins counter (it is the span with class 'win')
+var winEl = document.querySelector('.win');
 // TODO: Grab the HTML element that holds the losses counter (it is the span with class 'lose')
+var loseEl = document.querySelector('.lose');
 // TODO: Grab the HTML element that holds the time left (it is the div with class 'timer-count')
-// TODO: Grab the Start button
-
+var timerCountEl = document.querySelector('.timer-count');
+// TODO: Grab the start button
+var startEl = document.querySelector('.start-button');
 // Global variables needed
 // Array of words the user will guess
 var words = [
@@ -21,17 +25,28 @@ var words = [
 // The startGame function is called when the start button is clicked
 function startGame() {
 	// TODO: Reset the time left, as well as any other global variables as needed
+	var timeLeft = 0;
 	// TODO: Call the 'renderBlanks' function
+	renderBlanks();
 	// TODO: Call the 'setTimer' function
+	setTimer();
 	// TODO (Optional): Disable the start button, so it cannot be clicked when round is in progress
 }
 
 // TODO: Attach an event listener to the start button to call the 'startGame' function on click
-
+startEl.addEventListener("click", startGame);
 // Function to display blanks ('_') on screen
 function renderBlanks() {
 	// TODO: Randomly pick a word from the 'words' array - this will be the hidden word the user must guess
+	
+	var wordChoice = Math.floor(Math.random() * words.length);
+		console.log('wordChoice', words[wordChoice]);
+	
+	var wordSelected = words[wordChoice];
+
 	// TODO: Create a string with each blank ('_') separated by a space. The number of blanks must match the number of letters in the hidden word. For example, if the hidden word is 'modulus', then the string of blanks should be '_ _ _ _ _ _ _'
+	var wordSpaces = wordSelected.replace('_');
+	console.log('spaces', wordSpaces);
 	// TODO: Display the blanks on the page (it should be the text content of the div with class 'word-blanks')
 }
 
@@ -71,7 +86,9 @@ document.addEventListener('keydown', function (event) {
 
 // Function to retrieve the number of wins stored in local storage. This function is used in the init function.
 function getWins() {
-	// TODO: Get stored value from local storage and display it on the page. If there was nothing retrieved from local storage then set the number of wins to 0
+	// TODO: Get stored value from local storage and display it on the page.
+	
+	//If there was nothing retrieved from local storage then set the number of wins to 0
 }
 
 // Function to retrieve the number of losses stored in local storage. This function is used in the init function.
