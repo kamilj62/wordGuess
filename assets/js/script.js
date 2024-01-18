@@ -1,4 +1,5 @@
 // DOM elements needed
+
 // TODO: Grab the HTML element that holds the blanks (it is the div with class 'word-blanks')
 var wordBlanksEl = document.querySelector('.word-blanks');
 // TODO: Grab the HTML element that holds the wins counter (it is the span with class 'win')
@@ -22,10 +23,11 @@ var words = [
 ];
 // TODO: Declare additional global variables as needed - you will decide as you progress through coding this game
 
+
 // The startGame function is called when the start button is clicked
 function startGame() {
 	// TODO: Reset the time left, as well as any other global variables as needed
-	var timeLeft = 0;
+	timer = 10;
 	// TODO: Call the 'renderBlanks' function
 	renderBlanks();
 	// TODO: Call the 'setTimer' function
@@ -45,18 +47,36 @@ function renderBlanks() {
 	var wordSelected = words[wordChoice];
 
 	// TODO: Create a string with each blank ('_') separated by a space. The number of blanks must match the number of letters in the hidden word. For example, if the hidden word is 'modulus', then the string of blanks should be '_ _ _ _ _ _ _'
-	var wordSpaces = wordSelected.replace('_');
-	console.log('spaces', wordSpaces);
+	var wordSpaces = Array(wordSelected.length).fill('_').join(' ');
+		console.log('spaces', wordSpaces);
 	// TODO: Display the blanks on the page (it should be the text content of the div with class 'word-blanks')
+	wordBlanksEl.textContent = wordSpaces;
+
 }
 
-// Function to control the timer
+//Function to control the timer
 function setTimer() {
 	// TODO: Set the timer using setInterval(). Every second, decrement the time left by 1 and check if you need to stop the timer either because the user has found the hidden word or because there is no time left.
 	/* Hints:
   - If the user has found the hidden word in time, then stop the timer (use clearInterval()) and invoke the 'winGame' function
   - If there is no time left, then stop the timer (use clearInterval()) and invoke the 'loseGame' function
   */
+  var timerInterval = setInterval(function() {
+    timer--;
+    timerCountEl.textContent = timer;
+
+    if(timer !== 0) {
+      // Stops execution of action at set interval
+      	clearInterval(timerInterval);
+      // Calls winGame function
+      	winGame();
+    }
+	else if (timer === 0) {
+		clearInterval(timerInterval);
+		loseGame();
+	}
+
+  }, 1000);
 }
 
 // The winGame function is called when the user has found the hidden word
