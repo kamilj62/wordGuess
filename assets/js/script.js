@@ -24,6 +24,7 @@ var words = [
 	'boolean',
 ];
 // TODO: Declare additional global variables as needed - you will decide as you progress through coding this game
+	var targetWord = "";
 
 
 // The startGame function is called when the start button is clicked
@@ -46,10 +47,10 @@ function renderBlanks() {
 	var wordChoice = Math.floor(Math.random() * words.length);
 		console.log('wordChoice', words[wordChoice]);
 	
-	var wordSelected = words[wordChoice];
+	var targetWord = words[wordChoice];
 
 	// TODO: Create a string with each blank ('_') separated by a space. The number of blanks must match the number of letters in the hidden word. For example, if the hidden word is 'modulus', then the string of blanks should be '_ _ _ _ _ _ _'
-	var wordSpaces = Array(wordSelected.length).fill('_').join(' ');
+	var wordSpaces = Array(targetWord.length).fill('_').join(' ');
 		console.log('spaces', wordSpaces);
 	// TODO: Display the blanks on the page (it should be the text content of the div with class 'word-blanks')
 	wordBlanksEl.textContent = wordSpaces;
@@ -104,9 +105,10 @@ function loseGame() {
 // The checkLetters function tests if the guessed letter is in the hidden word and renders it to the screen.
 function checkLetters(letter) {
 	// TODO: Loop over each letter of the hidden word and update the blanks if the letter guessed is in the hidden word
-	for (let i = 0; i < words.length; i++) {
-		if (letter) {
-			wordBlanksEl.textContent = letter;
+	for (let i = 0; i < targetWord.length; i++) {
+		if (letter.toLowerCase() === targetWord[i].toLowerCase()) {
+			wordBlanksEl.textContent[i]
+			console.log(wordBlanksEl.textContent[i]); 
 		}
 		
 	}
@@ -115,13 +117,13 @@ function checkLetters(letter) {
 // Attach event listener to document to listen for key event
 document.addEventListener('keydown', function (event) {
 	// TODO: Check the time left - if time is up, exit the function
+	console.log(event.key);
 	if (timer === 0) {
 		return;
 	}
 	// TODO: Collect the key pressed. If it is a letter, then: (1) pass it to the 'checkLetters' function to verify if it's a correct guess, then (2) check if the user has found the hidden word
-	if (checkLetters()) {
-
-	}
+	checkLetters(event.key);
+	
 });
 
 // Function to retrieve the number of wins stored in local storage. This function is used in the init function.
