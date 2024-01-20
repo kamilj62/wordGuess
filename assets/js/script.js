@@ -24,13 +24,14 @@ var words = [
 	'boolean',
 ];
 // TODO: Declare additional global variables as needed - you will decide as you progress through coding this game
-	var targetWord = "";
+var targetWord = "";
+var timerInterval;
 
 
 // The startGame function is called when the start button is clicked
 function startGame() {
 	// TODO: Reset the time left, as well as any other global variables as needed
-	timer = 10;
+	timer = 30;
 	// TODO: Call the 'renderBlanks' function
 	renderBlanks();
 	// TODO: Call the 'setTimer' function
@@ -47,7 +48,7 @@ function renderBlanks() {
 	var wordChoice = Math.floor(Math.random() * words.length);
 		console.log('wordChoice', words[wordChoice]);
 	
-	var targetWord = words[wordChoice];
+	targetWord = words[wordChoice];
 
 	// TODO: Create a string with each blank ('_') separated by a space. The number of blanks must match the number of letters in the hidden word. For example, if the hidden word is 'modulus', then the string of blanks should be '_ _ _ _ _ _ _'
 	var wordSpaces = Array(targetWord.length).fill('_').join(' ');
@@ -64,7 +65,7 @@ function setTimer() {
   - If the user has found the hidden word in time, then stop the timer (use clearInterval()) and invoke the 'winGame' function
   - If there is no time left, then stop the timer (use clearInterval()) and invoke the 'loseGame' function
   */
-  var timerInterval = setInterval(function() {
+  timerInterval = setInterval(function() {
     timer--;
     timerCountEl.textContent = timer;
 
@@ -86,18 +87,22 @@ function setTimer() {
 function winGame() {
 	// TODO: Let the user know they won
 	wordBlanksEl.textContent = "You win";
+	win++;
 	// TODO: Update the win count on screen as well as in local storage
-	localStorage.setItem("winEl", win++);
+	localStorage.setItem("wins", win);
 	winEl.textContent = win;
+
 	// TODO (Optional): Enable the start button in case the user wants to play again
+	clearInterval(timerInterval);
 }
 
 // The loseGame function is called when timer reaches 0
 function loseGame() {
 	// TODO: Let the user know they lost
 	wordBlanksEl.textContent = "You Lose";
+	loss++;
 	// TODO: Update the loss count on screen as well as in local storage
-	localStorage.setItem("loseEl", loss++);
+	localStorage.setItem("loses", loss);
 	loseEl.textContent = loss;
 	// TODO (Optional): Enable the start button in case the user wants to play again
 }
@@ -105,10 +110,17 @@ function loseGame() {
 // The checkLetters function tests if the guessed letter is in the hidden word and renders it to the screen.
 function checkLetters(letter) {
 	// TODO: Loop over each letter of the hidden word and update the blanks if the letter guessed is in the hidden word
+	console.log(targetWord); 
 	for (let i = 0; i < targetWord.length; i++) {
 		if (letter.toLowerCase() === targetWord[i].toLowerCase()) {
-			wordBlanksEl.textContent[i]
-			console.log(wordBlanksEl.textContent[i]); 
+			var stringArray = wordBlanksEl.textContent.split(' ');
+			console.log(stringArray);
+			stringArray[i] = letter;
+			wordBlanksEl.textContent = stringArray.join(' ');
+			if (!stringArray.join(' ').includes('_')) {
+				winGame();
+			}
+
 		}
 		
 	}
@@ -129,13 +141,16 @@ document.addEventListener('keydown', function (event) {
 // Function to retrieve the number of wins stored in local storage. This function is used in the init function.
 function getWins() {
 	// TODO: Get stored value from local storage and display it on the page.
-	
+	var wins = localStorage.getItem('wins') || 0;
+	winEl.textContent = wins;
 	//If there was nothing retrieved from local storage then set the number of wins to 0
 }
 
 // Function to retrieve the number of losses stored in local storage. This function is used in the init function.
 function getlosses() {
 	// TODO: Get stored value from local storage and display it on the page. If there was nothing retrieved from local storage then set the number of losses to 0
+	var losses = localStorage.getItem("loses") || 0;
+	loseEl.textContent = losses;
 }
 
 // The init function is called when the page loads
